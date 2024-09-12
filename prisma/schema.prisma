@@ -12,3 +12,18 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Flight {
+  code               Int @default(autoincrement()) @id
+  originCep          String
+  originCountry      String
+  originCity         String
+  originState        String
+  destinationCep     String
+  destinationCountry String
+  destinationCity    String
+  destinationState   String
+  date               DateTime
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+}
