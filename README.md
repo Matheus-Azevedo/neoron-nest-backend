@@ -55,20 +55,20 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 
   ```
   {
-  "codigo": "123ABC",
-  "origem": {
+  "code": "123ABC",
+  "origin": {
     "cep": "12345678",
-    "pais": "Brasil",
-    "cidade": "São Paulo",
-    "estado": "SP"
+    "country": "Brasil",
+    "city": "São Paulo",
+    "state": "SP"
   },
-  "destino": {
+  "destination": {
     "cep": "87654321",
-    "pais": "Brasil",
-    "cidade": "Rio de Janeiro",
-    "estado": "RJ"
+    "country": "Brasil",
+    "city": "Rio de Janeiro",
+    "state": "RJ"
   },
-  "data": "2023-09-12T14:30:00"
+  "date": "2023-09-12T14:30:00"
   }
   ```
 
