@@ -30,11 +30,7 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 3.  Configure as variáveis de ambiente: Crie um arquivo `.env` na raiz do projeto e configure as seguintes variáveis:
 
     ```
-    DATABASE_HOST=localhost
-    DATABASE_PORT=5432
-    DATABASE_USER=seu_usuario
-    DATABASE_PASSWORD=sua_senha
-    DATABASE_NAME=nome_do_banco
+    DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DB"
     ```
 
 4.  Rode as migrações do banco de dados:
@@ -55,20 +51,15 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 
   ```
   {
-  "code": "123ABC",
-  "origin": {
-    "cep": "12345678",
-    "country": "Brasil",
-    "city": "São Paulo",
-    "state": "SP"
-  },
-  "destination": {
-    "cep": "87654321",
-    "country": "Brasil",
-    "city": "Rio de Janeiro",
-    "state": "RJ"
-  },
-  "date": "2023-09-12T14:30:00"
+  "originCep": "12345-678",
+  "originCountry": "Brazil",
+  "originCity": "São Paulo",
+  "originState": "SP",
+  "destinationCep": "98765-432",
+  "destinationCountry": "USA",
+  "destinationCity": "New York",
+  "destinationState": "NY",
+  "date": "2024-09-12T14:30:00Z"
   }
   ```
 
@@ -80,9 +71,8 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 
   ```
   {
-  "codigo": "456DEF",
-  "origem": { ... },
-  "destino": { ... },
+  "originCep": "12345-678",
+  "destinationCep": "98765-432",
   "data": "2023-09-12T16:30:00"
   }
   ```
@@ -110,3 +100,7 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 
 - **Backend**: [Backend with Render](https://neoron-nest-backend.onrender.com/)
 - **Database**: [Postgres With Render](https://dashboard.render.com/d/dpg-crguost6l47c73c08lb0-a)
+
+## Documentação
+
+- **Swagger**: [Swagger Link](https://neoron-nest-backend.onrender.com/api)
