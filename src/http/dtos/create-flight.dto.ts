@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateFlightDto {
@@ -42,7 +43,11 @@ export class CreateFlightDto {
   @IsNotEmpty()
   destinationState: string;
 
-  @ApiProperty({ description: 'Date of the flight', example: '2021-10-10' })
+  @ApiProperty({
+    description: 'Date of the flight',
+    example: '2024-09-12T14:30:00Z', // Exemplo no formato ISO 8601
+  })
+  @Type(() => Date)
   @IsDate()
   @IsNotEmpty()
   date: Date;
