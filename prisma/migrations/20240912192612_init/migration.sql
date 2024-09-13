@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Flight" (
-    "code" SERIAL NOT NULL,
+    "code" TEXT NOT NULL,
     "originCep" TEXT NOT NULL,
     "originCountry" TEXT NOT NULL,
     "originCity" TEXT NOT NULL,
@@ -12,6 +12,7 @@ CREATE TABLE "Flight" (
     "date" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "id" SERIAL NOT NULL,
 
-    CONSTRAINT "Flight_pkey" PRIMARY KEY ("code")
+    CONSTRAINT "Flight_pkey" PRIMARY KEY ("id")
 );
