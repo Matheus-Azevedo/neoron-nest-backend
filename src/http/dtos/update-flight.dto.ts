@@ -1,7 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFlightDto } from './create-flight.dto';
 
-export class UpdateFlightDto extends PartialType(CreateFlightDto) {
-  id: number;
-  code: string;
-}
+export class UpdateFlightDto extends PartialType(CreateFlightDto) {}
