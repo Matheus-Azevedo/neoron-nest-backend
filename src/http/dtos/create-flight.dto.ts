@@ -45,7 +45,8 @@ export class CreateFlightDto {
 
   @ApiProperty({
     description: 'Date of the flight',
-    example: '2024-09-12T14:30:00Z', // Exemplo no formato ISO 8601
+    example: '2024-09-12T14:30:00Z',
+    format: 'date-time',
   })
   @Type(() => Date)
   @IsDate()
