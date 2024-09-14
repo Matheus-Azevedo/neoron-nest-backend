@@ -6,12 +6,12 @@ import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: ['log', 'error', 'warn', 'debug', 'verbose'],
+    // logger: ['log', 'error', 'warn', 'debug', 'verbose'], // This will log all the requests to the console and will help in debugging, apply only in development mode
   });
 
   app.enableCors({
     origin: [
-      'http://localhost:3000',
+      'http://localhost:3000', // This is the frontend URL where the requests will come for development mode
       'https://neoron-next-frontned-f4dt.vercel.app/',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
