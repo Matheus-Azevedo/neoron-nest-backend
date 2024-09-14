@@ -24,7 +24,7 @@ export class PrismaFlightRepository implements FlightRepository {
     }
   }
 
-  flightDateVerification(lastFlightDate: Date, newFlightDate: Date): boolean {
+  dateVerification(lastFlightDate: Date, newFlightDate: Date): boolean {
     const lastFlight = new Date(lastFlightDate);
     const newFlight = new Date(newFlightDate);
     const MINUTES_30_IN_MS = 30 * 60 * 1000;
@@ -41,21 +41,61 @@ export class PrismaFlightRepository implements FlightRepository {
     return `${year}-${month}-${day} às ${hours}:${minutes}`;
   }
 
-  async create(createFlightDto: CreateFlightDto): Promise<GetFlightDto> {
-    const lastFlight = await this.getLastFlight();
+  flightDateVerification(
+    lastFlight: GetFlightDto | null,
+    newFlight: CreateFlightDto,
+  ): void {
     if (lastFlight) {
-      // Business Rule: The interval between flights must be 30 minutes
-      if (this.flightDateVerification(lastFlight.date, createFlightDto.date)) {
+      if (this.dateVerification(lastFlight.date, newFlight.date)) {
         const lastFlightDate = this.formatDate(lastFlight.date);
         throw new Error(
           `O intervalo entre os voos deve ser de 30 minutos, o último voo foi em: ${lastFlightDate}`,
         );
       }
     }
+  }
+
+  async flightDestinationVerification(
+    newFlight: CreateFlightDto,
+  ): Promise<void> {
+    const isAFlightToTheSameDestinationAndDate =
+      await this.prismaService.flight.findFirst({
+        where: {
+          AND: [
+            {
+              destinationCep: newFlight.destinationCep,
+            },
+            {
+              destinationCountry: newFlight.destinationCountry,
+            },
+            {
+              destinationCity: newFlight.destinationCity,
+            },
+            {
+              destinationState: newFlight.destinationState,
+            },
+            {
+              date: newFlight.date,
+            },
+          ],
+        },
+      });
+    if (isAFlightToTheSameDestinationAndDate) {
+      throw new Error('Já existe um voo para o mesmo destino e data.');
+    } else {
+      const lastFlight = await this.getLastFlight();
+      // Business Rule 2: The interval between flights must be 30 minutes
+      this.flightDateVerification(lastFlight, newFlight);
+    }
+  }
+
+  async create(createFlightDto: CreateFlightDto): Promise<GetFlightDto> {
+    // Business Rule 3: There must be no flight to the same destination and date
+    await this.flightDestinationVerification(createFlightDto);
     try {
       const flight = await this.prismaService.flight.create({
         data: {
-          code: randomUUID(), // Business Rule: The code must be random
+          code: randomUUID(), // Business Rule 1: The code must be random
           ...createFlightDto,
         },
       });
