@@ -103,4 +103,10 @@ Este repositório contém a API backend do sistema de gerenciamento de voos da e
 
 ## Documentação
 
+<img src="./docs/peek_2.jpg" alt="ER Diagram" width="500"/>
+
+- **Diagrama ER**: [ER Link](https://lucid.app/lucidchart/02158731-84dd-4fb3-b79a-d05b7e350cf8/edit?viewport_loc=-539%2C-11%2C2219%2C1095%2C0_0&invitationId=inv_60fcf413-6780-4024-b803-31d8ab82934e)
+
+<img src="./docs/peek_1.jpg" alt="Swagger" width="500"/>
+
 - **Swagger**: [Swagger Link](https://neoron-nest-backend.onrender.com/api)
