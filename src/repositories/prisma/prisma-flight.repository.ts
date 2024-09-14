@@ -11,11 +11,51 @@ import { Injectable } from '@nestjs/common';
 export class PrismaFlightRepository implements FlightRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  async getLastFlight(): Promise<Flight | null> {
+    try {
+      return await this.prismaService.flight.findFirst({
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    } catch (error) {
+      console.error('Erro ao buscar último flight:', error);
+      throw new Error('Erro ao buscar último flight');
+    }
+  }
+
+  flightDateVerification(lastFlightDate: Date, newFlightDate: Date): boolean {
+    const lastFlight = new Date(lastFlightDate);
+    const newFlight = new Date(newFlightDate);
+    const MINUTES_30_IN_MS = 30 * 60 * 1000;
+    const differenceInMs = Math.abs(lastFlight.getTime() - newFlight.getTime());
+    return differenceInMs <= MINUTES_30_IN_MS;
+  }
+
+  formatDate(date: Date): string {
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} às ${hours}:${minutes}`;
+  }
+
   async create(createFlightDto: CreateFlightDto): Promise<GetFlightDto> {
+    const lastFlight = await this.getLastFlight();
+    if (lastFlight) {
+      // Business Rule: The interval between flights must be 30 minutes
+      if (this.flightDateVerification(lastFlight.date, createFlightDto.date)) {
+        const lastFlightDate = this.formatDate(lastFlight.date);
+        throw new Error(
+          `O intervalo entre os voos deve ser de 30 minutos, o último voo foi em: ${lastFlightDate}`,
+        );
+      }
+    }
     try {
       const flight = await this.prismaService.flight.create({
         data: {
-          code: randomUUID(),
+          code: randomUUID(), // Business Rule: The code must be random
           ...createFlightDto,
         },
       });
