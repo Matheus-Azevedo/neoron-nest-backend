@@ -12,11 +12,11 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       // 'http://localhost:3000', // This is the frontend URL where the requests will come for development mode
-      'https://neoron-next-frontned-f4dt.vercel.app/',
+      'https://neoron-next-frontned-f4dt.vercel.app',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
-    optionsSuccessStatus: HttpStatus.FORBIDDEN,
+    optionsSuccessStatus: HttpStatus.NO_CONTENT,
   });
 
   app.use(helmet()); // Helmet is a collection of 14 smaller middleware functions that set security-related HTTP headers, this will help secure the application
