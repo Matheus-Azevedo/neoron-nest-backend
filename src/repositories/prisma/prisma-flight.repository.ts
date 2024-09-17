@@ -32,24 +32,14 @@ export class PrismaFlightRepository implements FlightRepository {
     return differenceInMs <= MINUTES_30_IN_MS;
   }
 
-  formatDate(date: Date): string {
-    const year = date.getUTCFullYear();
-    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(date.getUTCDate()).padStart(2, '0');
-    const hours = String(date.getUTCHours()).padStart(2, '0');
-    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
-    return `${year}-${month}-${day} às ${hours}:${minutes}`;
-  }
-
   flightDateVerification(
     lastFlight: GetFlightDto | null,
     newFlight: CreateFlightDto,
   ): void {
     if (lastFlight) {
       if (this.dateVerification(lastFlight.date, newFlight.date)) {
-        const lastFlightDate = this.formatDate(lastFlight.date);
         throw new Error(
-          `O intervalo entre os voos deve ser de 30 minutos, o último voo foi em: ${lastFlightDate}`,
+          `O intervalo entre os voos deve ser de 30 minutos, o último voo foi em: ${lastFlight.date}`,
         );
       }
     }
