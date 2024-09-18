@@ -34,7 +34,7 @@ export class PrismaFlightRepository implements FlightRepository {
 
   flightDateVerification(
     lastFlight: GetFlightDto | null,
-    newFlight: CreateFlightDto,
+    newFlight: CreateFlightDto | UpdateFlightDto,
   ): void {
     if (lastFlight) {
       if (this.dateVerification(lastFlight.date, newFlight.date)) {
@@ -46,7 +46,7 @@ export class PrismaFlightRepository implements FlightRepository {
   }
 
   async flightDestinationVerification(
-    newFlight: CreateFlightDto,
+    newFlight: CreateFlightDto | UpdateFlightDto,
   ): Promise<void> {
     const isAFlightToTheSameDestinationAndDate =
       await this.prismaService.flight.findFirst({
@@ -122,6 +122,8 @@ export class PrismaFlightRepository implements FlightRepository {
     id: number,
     updatedFlightDto: UpdateFlightDto,
   ): Promise<UpdateFlightDto> {
+    // Business Rule 3: There must be no flight to the same destination and date
+    await this.flightDestinationVerification(updatedFlightDto);
     try {
       const flightUpdate = await this.prismaService.flight.update({
         where: {
